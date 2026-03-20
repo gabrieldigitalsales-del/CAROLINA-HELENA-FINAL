@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}{{ site.store_name }} | Contato{% endblock %}
+
+{% block content %}
+<section class="section-space-sm">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-kicker">Contato</span>
+            <h1 class="page-title">Entre em contato</h1>
+            <p class="section-subtitle">{{ site.contact_intro }}</p>
+        </div>
+
+        <div class="row g-5 align-items-center justify-content-center">
+            <!-- CARD DE CONTATO -->
+            <div class="col-lg-5">
+                <div class="contact-card h-100">
+                    <h2 class="h3 mb-4">Fale com a loja</h2>
+
+                    <div class="contact-item">
+                        <div class="contact-grid-icon"><i class="bi bi-whatsapp"></i></div>
+                        <div>
+                            <div class="fw-semibold">WhatsApp</div>
+                            <a href="{{ store_whatsapp_link }}" target="_blank" rel="noopener">
+                                Atendimento direto
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-grid-icon"><i class="bi bi-instagram"></i></div>
+                        <div>
+                            <div class="fw-semibold">Instagram</div>
+                            <a href="{{ site.instagram_url }}" target="_blank" rel="noopener">
+                                Abrir perfil
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-grid-icon"><i class="bi bi-geo-alt"></i></div>
+                        <div>
+                            <div class="fw-semibold">Endereço</div>
+                            <div class="text-muted">{{ site.address_line }}</div>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-grid-icon"><i class="bi bi-clock"></i></div>
+                        <div>
+                            <div class="fw-semibold">Horário de atendimento</div>
+                            <div class="text-muted">{{ site.contact_hours|nl2br|safe }}</div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-3 mt-4">
+                        <a class="btn btn-primary-custom" href="{{ store_whatsapp_link }}" target="_blank" rel="noopener">
+                            <i class="bi bi-whatsapp me-2"></i> Chamar no WhatsApp
+                        </a>
+                        <a class="btn btn-outline-dark" href="{{ site.instagram_url }}" target="_blank" rel="noopener">
+                            <i class="bi bi-instagram me-2"></i> Ir para o Instagram
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMAGEM AO LADO -->
+            <div class="col-lg-5">
+                <div class="contact-visual-wrap h-100">
+                    <img
+                        src="{{ url_for('static', filename=site.contact_image or 'images/about-cover.svg') }}"
+                        alt="Contato {{ site.store_name }}"
+                        class="contact-page-image img-fluid rounded-4 shadow-sm"
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
