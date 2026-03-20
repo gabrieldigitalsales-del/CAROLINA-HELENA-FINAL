@@ -24,7 +24,6 @@ from werkzeug.utils import secure_filename
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", os.path.join(BASE_DIR, "static", "uploads"))
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "svg"}
-print("DATABASE_URL:", os.getenv("DATABASE_URL"))
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "troque-esta-chave-em-producao")
@@ -347,9 +346,18 @@ def cart_page():
 @app.post("/cart/add/<int:product_id>")
 def add_to_cart(product_id):
     product = Product.query.get_or_404(product_id)
-    if not product.is_active or product.stock <= 0:
-        flash("Este produto está indisponível no momento.", "warning")
-        return redirect(request.referrer or url_for("collection"))
+
+# verifica se está ativo
+if not product.is_active:
+    flash("Este produto está indisponível no momento.", "warning")
+    return redirect(request.referrer or url_for("collection"))
+
+# trata estoque com segurança
+stock = product.stock or 0
+
+if stock <= 0:
+    flash("Produto sem estoque no momento.", "warning")
+    return redirect(request.referrer or url_for("collection"))
 
     quantity = max(1, int(request.form.get("quantity", 1) or 1))
     selected_size = request.form.get("size", "").strip()
