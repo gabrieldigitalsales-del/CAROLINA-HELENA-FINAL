@@ -14,9 +14,9 @@
             {% for banner in banners %}
             <div class="carousel-item {% if loop.first %}active{% endif %}">
                 <div class="hero-banner">
-                    
+
                     <img
-                        src="{{ url_for('static', filename=banner.image) }}"
+                        src="{{ url_for('static', filename=(banner.image or 'images/banner-default.svg').replace('static/', '')) }}"
                         alt="{{ banner.title or 'Banner' }}"
                         class="hero-image"
                     >
@@ -108,7 +108,6 @@
             <p class="section-subtitle">{{ site.home_launches_subtitle }}</p>
         </div>
 
-        <!-- PRODUTOS -->
         <div class="row g-4 mt-4">
             {% for product in launches %}
             <div class="col-6 col-md-3 col-lg-3">
@@ -118,7 +117,6 @@
             <div class="col-12">
                 <div class="empty-block">
                     <h3>Cadastre seus lançamentos</h3>
-                    <p>Os produtos aparecem automaticamente aqui.</p>
                 </div>
             </div>
             {% endfor %}
@@ -130,11 +128,6 @@
 <section class="section-space">
     <div class="container text-center">
 
-        <span class="section-kicker">Organize sua vitrine</span>
-        <h2 class="section-title">{{ site.home_categories_title }}</h2>
-        <p class="section-subtitle">{{ site.home_categories_subtitle }}</p>
-
-        <!-- CATEGORIAS -->
         <div class="row g-4 mt-4">
             {% for category in categories %}
             <div class="col-6 col-md-3 col-lg-3">
@@ -142,24 +135,15 @@
                    class="category-card">
 
                     <div class="category-thumb">
-                        <img src="{{ url_for('static', filename=category.image or 'images/category-default.svg') }}"
-                             alt="{{ category.name }}">
+                        <img
+                            src="{{ url_for('static', filename=(category.image or 'images/category-default.svg').replace('static/', '')) }}"
+                            alt="{{ category.name }}"
+                        >
                     </div>
 
                     <h3>{{ category.name }}</h3>
 
-                    {% if category.description %}
-                    <p>{{ category.description }}</p>
-                    {% endif %}
-
                 </a>
-            </div>
-            {% else %}
-            <div class="col-12">
-                <div class="empty-block">
-                    <h3>Nenhuma categoria cadastrada</h3>
-                    <p>Crie categorias no painel.</p>
-                </div>
             </div>
             {% endfor %}
         </div>
@@ -170,22 +154,10 @@
 <section class="section-space bg-soft-green">
     <div class="container text-center">
 
-        <span class="section-kicker">Favoritos</span>
-        <h2 class="section-title">{{ site.home_best_sellers_title }}</h2>
-        <p class="section-subtitle">{{ site.home_best_sellers_subtitle }}</p>
-
-        <!-- MAIS VENDIDOS -->
         <div class="row g-4 mt-4">
             {% for product in best_sellers %}
             <div class="col-6 col-md-3 col-lg-3">
                 {% include 'partials/product_card.html' %}
-            </div>
-            {% else %}
-            <div class="col-12">
-                <div class="empty-block">
-                    <h3>Marque produtos como mais vendidos</h3>
-                    <p>Eles aparecerão aqui automaticamente.</p>
-                </div>
             </div>
             {% endfor %}
         </div>
