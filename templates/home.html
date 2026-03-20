@@ -3,7 +3,7 @@
 {% block content %}
 <section class="hero-section">
     {% if banners %}
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
         <div class="carousel-inner">
             {% for banner in banners %}
             <div class="carousel-item {% if loop.first %}active{% endif %}">
