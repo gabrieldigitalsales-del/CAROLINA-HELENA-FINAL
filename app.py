@@ -15,6 +15,7 @@ from flask import (
     request,
     session,
     url_for,
+    send_from_directory,
 )
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect, or_, text
@@ -22,7 +23,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", os.path.join(BASE_DIR, "static", "uploads"))
+UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "/data/uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "svg"}
 
 app = Flask(__name__)
@@ -242,6 +243,11 @@ def inject_globals():
 def init_db_command():
     initialize_database()
     print("Banco inicializado com sucesso.")
+
+
+@app.route("/static/uploads/<path:filename>")
+def uploaded_file(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 
 @app.route("/")
@@ -863,6 +869,7 @@ def save_upload(file_storage):
     filename = secure_filename(file_storage.filename)
     extension = filename.rsplit(".", 1)[1].lower()
     final_name = f"{uuid.uuid4().hex}.{extension}"
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     path = os.path.join(app.config["UPLOAD_FOLDER"], final_name)
     file_storage.save(path)
     return f"uploads/{final_name}"
