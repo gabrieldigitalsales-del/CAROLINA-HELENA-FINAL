@@ -255,7 +255,7 @@ def home():
     banners = Banner.query.filter_by(is_active=True).order_by(Banner.sort_order.asc(), Banner.id.desc()).all()
     categories = Category.query.filter_by(is_active=True).order_by(Category.name.asc()).all()
     launches = (
-        Product.query.filter_by(is_active=True)
+        Product.query.filter_by(is_active=True, is_new=True)
         .order_by(Product.created_at.desc())
         .limit(8)
         .all()
