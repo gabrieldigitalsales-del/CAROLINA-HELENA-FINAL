@@ -15,8 +15,9 @@
             <div class="carousel-item {% if loop.first %}active{% endif %}">
                 <div class="hero-banner">
 
+                    {% set banner_image = banner.image or 'images/banner-default.svg' %}
                     <img
-                        src="{{ url_for('static', filename=(banner.image or 'images/banner-default.svg').replace('static/', '')) }}"
+                        src="{% if banner_image.startswith('uploads/') %}{{ url_for('uploaded_file', filename=banner_image.replace('uploads/', '')) }}{% else %}{{ url_for('static', filename=banner_image.replace('static/', '')) }}{% endif %}"
                         alt="{{ banner.title or 'Banner' }}"
                         class="hero-image"
                     >
@@ -128,6 +129,12 @@
 <section class="section-space">
     <div class="container text-center">
 
+        <div class="text-center mb-4">
+            <span class="section-kicker">Coleções</span>
+            <h2 class="section-title">{{ site.home_categories_title }}</h2>
+            <p class="section-subtitle">{{ site.home_categories_subtitle }}</p>
+        </div>
+
         <div class="row g-4 mt-4">
             {% for category in categories %}
             <div class="col-6 col-md-3 col-lg-3">
@@ -135,8 +142,9 @@
                    class="category-card">
 
                     <div class="category-thumb">
+                        {% set category_image = category.image or 'images/category-default.svg' %}
                         <img
-                            src="{{ url_for('static', filename=(category.image or 'images/category-default.svg').replace('static/', '')) }}"
+                            src="{% if category_image.startswith('uploads/') %}{{ url_for('uploaded_file', filename=category_image.replace('uploads/', '')) }}{% else %}{{ url_for('static', filename=category_image.replace('static/', '')) }}{% endif %}"
                             alt="{{ category.name }}"
                         >
                     </div>
@@ -154,10 +162,22 @@
 <section class="section-space bg-soft-green">
     <div class="container text-center">
 
+        <div class="text-center mb-4">
+            <span class="section-kicker">Favoritos</span>
+            <h2 class="section-title">{{ site.home_best_sellers_title }}</h2>
+            <p class="section-subtitle">{{ site.home_best_sellers_subtitle }}</p>
+        </div>
+
         <div class="row g-4 mt-4">
             {% for product in best_sellers %}
             <div class="col-6 col-md-3 col-lg-3">
                 {% include 'partials/product_card.html' %}
+            </div>
+            {% else %}
+            <div class="col-12">
+                <div class="empty-block">
+                    <h3>Cadastre seus produtos mais vendidos</h3>
+                </div>
             </div>
             {% endfor %}
         </div>
